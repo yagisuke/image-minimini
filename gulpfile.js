@@ -1,10 +1,10 @@
 // gulpプラグインの読みこみ
-var gulp = require('gulp')
+const gulp = require('gulp')
 
 // 画像を圧縮するプラグインの読み込み
-var imagemin = require('gulp-imagemin')
-var pngquant = require('imagemin-pngquant')
-var mozjpeg = require('imagemin-mozjpeg')
+const imagemin = require('gulp-imagemin')
+const pngquant = require('imagemin-pngquant')
+const mozjpeg = require('imagemin-mozjpeg')
 
 // imagesフォルダのpng,jpg画像を圧縮して、minified_imageフォルダに保存する
 gulp.task('default', function() { // タスクを登録
@@ -12,17 +12,17 @@ gulp.task('default', function() { // タスクを登録
     .pipe(imagemin(
       [
         pngquant({
-          quality: [.65, .80],
+          quality: [.65, .8],
           speed: 1
         }),
         mozjpeg({
           quality: 80,
           progressive: true
-        })
+        }),
+        imagemin.svgo(),
+        imagemin.optipng(),
+        imagemin.gifsicle()
       ],
-      imagemin.svgo(),
-      imagemin.optipng(),
-      imagemin.gifsicle()
     )) // 画像の圧縮処理
     .pipe(gulp.dest('./dist')) //保存
-});
+})
